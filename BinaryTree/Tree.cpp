@@ -14,6 +14,7 @@ private:
 	{
 		std::shared_ptr<Node<T>> max = target;
 		std::shared_ptr < Node<T> parent;
+		//need to remove the node we replace with and also rebuild the connections to the next nodes in the replace function. Maybe better to completely restart it
 		while (max->RightChild != nullptr)
 		{
 			max = max->RightChild;
