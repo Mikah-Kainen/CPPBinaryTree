@@ -108,6 +108,7 @@ public:
 		else if (head->Value == targetValue)
 		{
 			head = replace(head);
+			return true;
 		}
 		std::shared_ptr<Node<T>> current = head;
 		std::shared_ptr<Node<T>> parent;

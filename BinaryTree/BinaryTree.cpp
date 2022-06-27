@@ -31,6 +31,8 @@ int main()
     myTree.Add(4);
     myTree.Add(5);
     myTree.Remove(5);
+
+    //make a traversal to deconstruct the tree
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
