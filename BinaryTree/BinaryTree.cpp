@@ -30,7 +30,7 @@ int main()
     myTree.Add(3);
     myTree.Add(4);
     myTree.Add(5);
-    myTree.Remove(4);
+    myTree.Remove(5);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

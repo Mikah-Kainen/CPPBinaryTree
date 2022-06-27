@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Node.cpp"
 #include <memory>
 #include <functional>
@@ -12,13 +13,14 @@ private:
 
 	std::shared_ptr<Node<T>> extractMaxChild(std::shared_ptr<Node<T>> target)
 	{
-		std::shared_ptr<Node<T>> max = target;
-		std::shared_ptr < Node<T> parent;
-		//need to remove the node we replace with and also rebuild the connections to the next nodes in the replace function. Maybe better to completely restart it
+		std::shared_ptr<Node<T>> parent = target;
+		std::shared_ptr<Node<T>> max = target->RightChild;
 		while (max->RightChild != nullptr)
 		{
+			parent = max;
 			max = max->RightChild;
 		}
+		parent->RightChild = nullptr;
 		return max;
 	}
 
@@ -26,16 +28,23 @@ private:
 	{
 		if (targetNode->LeftChild == nullptr)
 		{
-			if (targetNode->RightChild == nullptr)
-			{
-				return nullptr;
-			}
-			else
-			{
-				return targetNode->RightChild;
-			}
+			std::cout << "case 1\n";
+			return targetNode->RightChild;
 		}
-		return extractMaxChild(targetNode->LeftChild);
+		else if (targetNode->LeftChild->RightChild == nullptr)
+		{
+			std::cout << "case 2\n";
+			targetNode->LeftChild->RightChild = targetNode->RightChild;
+			return targetNode->LeftChild;
+		}
+		else
+		{
+			std::cout << "case 3\n";
+			std::shared_ptr<Node<T>> temp = extractMaxChild(targetNode->LeftChild);
+			temp->LeftChild = targetNode->LeftChild;
+			temp->RightChild = targetNode->RightChild;
+			return temp;
+		}
 	}
 
 public:
@@ -49,6 +58,7 @@ public:
 		if (head == nullptr)
 		{
 			head = std::make_shared<Node<T>>(value);
+			return;
 		}
 		std::shared_ptr<Node<T>> current = head;
 		std::shared_ptr<Node<T>> parent;
@@ -94,6 +104,10 @@ public:
 		if (head == nullptr)
 		{
 			return false;
+		}
+		else if (head->Value == targetValue)
+		{
+			head = replace(head);
 		}
 		std::shared_ptr<Node<T>> current = head;
 		std::shared_ptr<Node<T>> parent;
