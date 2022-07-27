@@ -3,6 +3,7 @@
 #include "Node.cpp"
 #include <memory>
 #include <functional>
+#include <deque>
 
 template<typename T>
 class Tree
@@ -143,4 +144,16 @@ public:
 		return false;
 	}
 
+	~Tree()
+	{
+		std::deque<std::shared_ptr<Node<T>>> backingDeque = std::deque<std::shared_ptr<Node<T>>>();
+		std::shared_ptr<Node<T>> currentNode = head;
+
+		backingDeque.push_back(currentNode);
+		while (currentNode->LeftChild != nullptr)
+		{
+			currentNode = currentNode->LeftChild;
+			backingDeque.push_back(currentNode);
+		}
+	}
 };
