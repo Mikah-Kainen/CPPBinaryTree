@@ -5,6 +5,7 @@
 #include <functional>
 #include <deque>
 
+
 template<typename T>
 class Tree
 {
@@ -53,6 +54,46 @@ public:
 
 	Tree(std::function<int(T, T)> compareFunc)
 		: compareFunc{ compareFunc }  {}
+
+	~Tree()
+	{
+		std::deque<std::shared_ptr<Node<T>>> backingDeque = std::deque<std::shared_ptr<Node<T>>>();
+		backingDeque.push_back(head);
+
+		while (true)
+		{
+			while (backingDeque.back()->LeftChild != nullptr)
+			{
+				backingDeque.push_back(backingDeque.back()->LeftChild);
+			}
+			if(backingDeque.back()->RightChild != nullptr)
+			{
+				backingDeque.push_back(backingDeque.back()->RightChild);
+			}
+			else
+			{
+				
+				auto popped = backingDeque.back();
+				std::cout << "popped " << popped->Value << std::endl;
+
+				backingDeque.pop_back();
+				
+				if (backingDeque.size() == 0)
+				{
+					head = nullptr;
+					return;
+				}
+				if (!backingDeque.back()->LeftChild)
+				{
+					backingDeque.back()->RightChild = nullptr;
+				}
+				else
+				{
+					backingDeque.back()->LeftChild = nullptr;
+				}
+			}
+		} 
+	}
 
 	void Add(T value)
 	{
@@ -142,18 +183,5 @@ public:
 			}
 		}
 		return false;
-	}
-
-	~Tree()
-	{
-		std::deque<std::shared_ptr<Node<T>>> backingDeque = std::deque<std::shared_ptr<Node<T>>>();
-		std::shared_ptr<Node<T>> currentNode = head;
-
-		backingDeque.push_back(currentNode);
-		while (currentNode->LeftChild != nullptr)
-		{
-			currentNode = currentNode->LeftChild;
-			backingDeque.push_back(currentNode);
-		}
 	}
 };
