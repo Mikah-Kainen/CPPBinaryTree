@@ -90,6 +90,7 @@ public:
 				else
 				{
 					backingDeque.back()->LeftChild = nullptr;
+					backingDeque.push_back(backingDeque.back()->RightChild);
 				}
 			}
 		} 
